@@ -17,17 +17,20 @@ import { Text } from '@ui/'
 
 const styles = StyleSheet.create({
     row: {
-        flex:              1,
-        flexDirection:     'row',
-        borderBottomWidth: 1,
-        borderBottomColor: 'white'
+        flex:          1,
+        flexDirection: 'row',
+        paddingTop:    1,
+
     },
     button: {
-        flex:             1,
-        borderRightWidth: 1,
-        borderRightColor: 'white',
-        justifyContent:   'center',
-        alignItems:       'center'
+        flex:            1,
+        borderWidth:     10,
+        borderColor:     '#445566',
+        margin:          10,
+        borderRadius:    20,
+        backgroundColor: AppColors.brand.primary,
+        justifyContent:  'center',
+        alignItems:      'center'
     },
     number: {
         color:    'white',
@@ -71,48 +74,58 @@ class LockScreenView extends Component {
         StatusBar.setHidden(true);
         this.props.getPasscode();
         this.props.getAlarmState();
-        this.props.getLocation()
-            .then(this.props.getWeather(this.props.city));
+        // this.props.getLocation()
+        //     .then(this.props.getWeather(this.props.city));
+        this.props.getWeather(this.props.city);
         this.createWebsocket();
     }
 
     createWebsocket = () => {
-        /* eslint-disable no-undef */
-        ws = new WebSocket(APIConfig.ws);
-        ws.onopen = () => {
-            // connection opened
-            ws.send('initiate'); // send a message
-            clearInterval(this.webSocketInterval);
-        };
-          
-        ws.onmessage = (e) => {
-            // a message was received
-            console.log(e.data);
-            try {
-                let json = JSON.parse(e.data);
-                if (json.alarm) {
-                    this.props.alarmChanged(json.alarm);
-                    if (this.textInput) {
-                        this.textInput.clear();
-                    }
-                } else {
-                    this.props.sensorStateChanged(json);
+        try {
+            /* eslint-disable no-undef */
+            ws = new WebSocket(APIConfig.ws);
+            ws.onopen = () => {
+                // connection opened
+                try {
+                    clearInterval(this.webSocketInterval);
+                    ws.send('initiate'); // send a message
+                } catch (err) {
+                    console.log(err);
                 }
-            } catch (error) { console.log(error.message); }
-        };
-          
-        ws.onerror = (e) => {
-            // an error occurred
-            console.log(e.message);
-        };
-          
-        ws.onclose = (e) => {
-            // connection closed
-            console.log(e.code, e.reason);
-            this.webSocketInterval = setInterval(() => {
-                this.createWebsocket();
-            }, 10000);
-        };
+            };
+            
+            ws.onmessage = (e) => {
+                // a message was received
+                console.log(e.data);
+                try {
+                    let json = JSON.parse(e.data);
+                    if (json.alarm) {
+                        this.props.alarmChanged(json.alarm);
+                    } else {
+                        this.props.sensorStateChanged(json);
+                    }
+                } catch (error) { console.log(error.message); }
+            };
+            
+            ws.onerror = (e) => {
+                // an error occurred
+                console.log(e.message);
+            };
+            
+            ws.onclose = (e) => {
+                // connection closed
+                console.log(e.code, e.reason);
+                try {
+                    this.webSocketInterval = setInterval(() => {
+                        this.createWebsocket();
+                    }, 10000);
+                } catch (err) {
+                    console.log(err);
+                }
+            };
+        } catch(error) {
+            console.log(error);
+        }
     }
 
     log(value) {
@@ -128,7 +141,7 @@ class LockScreenView extends Component {
 
     render() {
         let securityOn = this.props.alarmState && this.props.selectedMode ? this.props.alarmState[this.props.selectedMode].active : false;
-        let placeholder = this.props.alarm ? 'Alarm Triggered' : securityOn ? this.props.selectedMode.toUpperCase() : 'Enter passcode';
+        let placeholder = this.props.alarm ? 'Alarm Triggered' : securityOn ? this.props.selectedMode.toUpperCase() : 'Enter Passcode';
         return (
             <View style={securityOn ? AppStyles.containerActive : AppStyles.container}>
                 <TextInput

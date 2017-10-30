@@ -47,10 +47,13 @@ const getLocation = () => {
 
 const getWeather = (city) => {
     return dispatch => AppAPI.weather.get({ q: city, APPID: APIConfig.weatherKey })
-        .then(weatherData => dispatch({
-            type: Actions.GET_WEATHER,
-            data: weatherData.list[0]
-        }));
+        .then(weatherData => {
+            return dispatch({
+                type: Actions.GET_WEATHER,
+                data: weatherData
+            });
+        })
+        .catch(err => console.log(err));
 };
 
 const getSensors = () => {

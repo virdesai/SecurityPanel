@@ -36,6 +36,6 @@ export default {
     ]),
     
     weatherEndpoints: new Map([
-        ['weather', '/data/2.5/forecast']
+        ['weather', '/data/2.5/weather']
     ]),
 };

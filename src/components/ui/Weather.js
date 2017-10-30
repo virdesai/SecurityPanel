@@ -13,28 +13,30 @@
  */
 import React, { Component, PropTypes } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
-import { Card, Spacer, Text } from '@ui/';
+import { Spacer, Text } from '@ui/';
 
 // Consts and Libs
-import { AppColors, AppStyles } from '@theme/';
-import { AppUtil } from '@lib/';
+import { AppStyles, AppFonts } from '@theme/';
 
 var styles = StyleSheet.create({
     temperature: {
-        fontWeight:    '100',
+        fontWeight:    'bold',
+        fontSize:      AppFonts.scaleFont(14),
         paddingBottom: 5
     },
     location: {
-        fontWeight:    '100',
+        fontWeight:    'bold',
         paddingBottom: 5
     },
     weatherType: {
-        fontWeight:    '500',
+        fontWeight:    'bold',
+        fontSize:      AppFonts.scaleFont(14),
         paddingBottom: 5
     },
     icon: {
-        fontFamily:    'WeatherIcons-Regular',
-        paddingBottom: 5
+        fontFamily: 'WeatherIcons-Regular',
+        fontSize:   AppFonts.scaleFont(35),
+        padding:    40
     }
 });
 
@@ -90,17 +92,15 @@ class CustomWeather extends Component {
                 justifyContent:  'center'}}
             >
                 <View style={[AppStyles.containerCentered]}>
+                    <Text style={[styles.temperature]}>
+                        {`Outside Temp: ${Math.round(this.props.temperature)} °F`}
+                    </Text>
+                    <Spacer /><Spacer />
                     <Text style={[styles.icon]}>
                         {this.props.icon}
                     </Text>
-                    <Text style={[styles.temperature]}>
-                        {`${Math.round(this.props.temperature)} °F`}
-                    </Text>
-                    <Text style={[styles.location]}>
-                        {this.props.city}
-                    </Text>
                     <Text style={[styles.weatherType]}>
-                        {this.props.weatherType}
+                        {`${this.props.city} - ${this.props.weatherType}`}
                     </Text>
                 </View>
             </Animated.View>

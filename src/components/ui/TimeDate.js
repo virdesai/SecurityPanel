@@ -13,10 +13,10 @@
  */
 import React, { Component, PropTypes } from 'react';
 import { View } from 'react-native';
-import { Card, Text, Spacer } from '@ui/';
+import { Spacer, Text } from '@ui/';
 
 // Consts and Libs
-import { AppColors, AppStyles } from '@theme/';
+import { AppColors, AppStyles, AppFonts } from '@theme/';
 
 /* Component ==================================================================== */
 class CustomTimeDate extends Component {
@@ -55,7 +55,7 @@ class CustomTimeDate extends Component {
         this.getTime =  setInterval(() => {
             let currentDate = new Date();
             this.setState({
-                liveTime: `${this.formatHours(currentDate.getHours())}:${this.formatMinutes(currentDate.getMinutes())}:${this.formatMinutes(currentDate.getSeconds())} ${currentDate.getHours() > 12 ? 'PM' : 'AM'}`,
+                liveTime: `${this.formatHours(currentDate.getHours())}:${this.formatMinutes(currentDate.getMinutes())}:${this.formatMinutes(currentDate.getSeconds())} ${currentDate.getHours() >= 12 ? 'PM' : 'AM'}`,
                 liveDate: currentDate.toDateString()
             })
         }, 1000);
@@ -78,7 +78,7 @@ class CustomTimeDate extends Component {
         const props = {
             ...this.props,
             containerStyle: [AppStyles.containerCentered, { backgroundColor: AppColors.brand.primary }],
-            dateStyle:      [AppStyles.baseText],
+            dateStyle:      [AppStyles.baseText, { fontSize: AppFonts.scaleFont(14) }],
             timeStyle:      [AppStyles.h3],
             wrapperStyle:   [AppStyles.containerCentered],
         };
@@ -107,6 +107,7 @@ class CustomTimeDate extends Component {
         return (
             <View style={styles.containerStyle}>
                 <Text style={styles.timeStyle}>{this.state.liveTime}</Text>
+                <Spacer /><Spacer />
                 <Text style={styles.dateStyle}>{this.state.liveDate}</Text>
             </View>
         );

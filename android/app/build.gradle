@@ -99,10 +99,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("/Users/virdesai/Downloads/android-master/virrelease.keystore")
-            storePassword "8v3d8u6n2c"
-            keyAlias "appsbyvir"
-            keyPassword "c2n6u8d3v8"
+            storeFile file("../keystores/securityKeystore.jks")
+            storePassword "password"
+            keyAlias "security"
+            keyPassword "password"
         }
     }
 
