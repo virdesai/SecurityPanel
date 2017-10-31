@@ -1,3 +1,4 @@
 <resources>
+    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">XG90idop13JkRrQb-gcshQjK_q7yc9c0c2e1-9a24-4221-b0a9-f68fd9af6c29</string>
     <string name="app_name">SecurityPanel</string>
 </resources>

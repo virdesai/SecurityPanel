@@ -72,11 +72,12 @@ import com.android.build.OutputFile
  * ]
  */
 
-project.ext.react = [
-    entryFile: "index.js"
-]
+//project.ext.react = [
+//    entryFile: "index.js"
+//]
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -125,10 +126,32 @@ android {
         }
     }
     buildTypes {
+        debug {
+            // Note: CodePush updates should not be tested in Debug mode as they are overriden by the RN packager. However, because CodePush checks for updates in all modes, we must supply a key.
+            buildConfigField "String", "CODEPUSH_KEY", '""'
+        }
+        releaseStaging {
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            buildConfigField "String", "CODEPUSH_KEY", '"02c9TeKMSDHg6qarLcvPw6Z30Vfec9c0c2e1-9a24-4221-b0a9-f68fd9af6c29"'
+            signingConfig signingConfigs.release
+            matchingFallbacks = ['release', 'debug']
+//            applicationVariants.all { variant ->
+//                variant.outputs.all { output ->
+//                    outputFileName = new File(output.outputFile.parent, outputFileName.replace(".apk", "_" + defaultConfig.versionName + ".apk"))
+//                }
+//            }
+        }
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            buildConfigField "String", "CODEPUSH_KEY", '"XG90idop13JkRrQb-gcshQjK_q7yc9c0c2e1-9a24-4221-b0a9-f68fd9af6c29"'
             signingConfig signingConfigs.release
+//            applicationVariants.all { variant ->
+//                variant.outputs.all { output ->
+//                    outputFileName = new File(output.outputFile.parent, outputFileName.replace(".apk", "_" + defaultConfig.versionCode + ".apk"))
+//                }
+//            }
         }
     }
     // applicationVariants are e.g. debug, release
@@ -147,9 +170,10 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-vector-icons')
+    implementation project(':react-native-vector-icons')
+    implementation project(':react-native-code-push')
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
+    compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.facebook.react:react-native:+'
     // From node_modules
 }

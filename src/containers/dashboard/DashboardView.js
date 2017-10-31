@@ -74,7 +74,7 @@ class Dashboard extends Component {
             timer: false,
         };
 
-        // every 10 minutes query for the weather 
+        // every 1 minute query for the weather 
         this.getWeather =  setInterval(() => {
             this.props.getWeather(this.props.city);
         }, 60000);
@@ -177,7 +177,7 @@ class Dashboard extends Component {
                                     this.state.timer && !this.props.alarm && canAlarm ?
                                         <View style={AppStyles.containerCentered}>
                                             <CountdownCircle
-                                                seconds={15}
+                                                seconds={30}
                                                 radius={70}
                                                 borderWidth={8}
                                                 color="#ff003f"
