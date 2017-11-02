@@ -101,6 +101,9 @@ class LockScreenView extends Component {
                     let json = JSON.parse(e.data);
                     if (json.alarm) {
                         this.props.alarmChanged(json.alarm);
+                        if (this.textInput) {
+                            this.textInput.clear();
+                        }
                     } else {
                         this.props.sensorStateChanged(json);
                     }

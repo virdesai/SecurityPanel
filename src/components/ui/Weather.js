@@ -12,7 +12,7 @@
  *
  */
 import React, { Component, PropTypes } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Spacer, Text } from '@ui/';
 
 // Consts and Libs
@@ -62,48 +62,22 @@ class CustomWeather extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            val: new Animated.Value(0)
-        };
     }
 
     render = () => {
-        var backgroundColor = this.state.val.interpolate({
-            inputRange:  [0, 1],
-            outputRange: [
-                this.state.currentColor,
-                this.state.nextColor
-            ],
-        });
-
-        this.state.val.setValue(0);
-    
-        // Start the animation
-        Animated.spring(this.state.val, {
-            tension:  1,
-            friction: 20,
-            toValue:  1
-        }).start();
-
         return (
-            <Animated.View style={{
-                backgroundColor: backgroundColor,
-                alignItems:      'center',
-                justifyContent:  'center'}}
-            >
-                <View style={[AppStyles.containerCentered]}>
-                    <Text style={[styles.temperature]}>
-                        {`Outside Temp: ${Math.round(this.props.temperature)} °F`}
-                    </Text>
-                    <Spacer /><Spacer />
-                    <Text style={[styles.icon]}>
-                        {this.props.icon}
-                    </Text>
-                    <Text style={[styles.weatherType]}>
-                        {`${this.props.city} - ${this.props.weatherType}`}
-                    </Text>
-                </View>
-            </Animated.View>
+            <View style={[AppStyles.containerCentered]}>
+                <Text style={[styles.temperature]}>
+                    {`Outside Temp: ${Math.round(this.props.temperature)} °F`}
+                </Text>
+                <Spacer /><Spacer />
+                <Text style={[styles.icon]}>
+                    {this.props.icon}
+                </Text>
+                <Text style={[styles.weatherType]}>
+                    {`${this.props.city} - ${this.props.weatherType}`}
+                </Text>
+            </View>
         );
     };
 }
