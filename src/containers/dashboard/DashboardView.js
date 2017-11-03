@@ -92,7 +92,6 @@ class Dashboard extends Component {
         StatusBar.setHidden(true);
         this.props.getModes();
         this.props.getSensors();
-        this.createWebsocket();
     }
 
     resetTimer = () => {
@@ -106,6 +105,7 @@ class Dashboard extends Component {
     componentWillUnmount = () => {
         clearInterval(this.getWeather);
         clearInterval(this.timer);
+        clearInterval(this.webSocketInterval);
     }
 
     createWebsocket = () => {
@@ -144,6 +144,7 @@ class Dashboard extends Component {
                 // connection closed
                 console.log(e.code, e.reason);
                 try {
+                    clearInterval(this.webSocketInterval);
                     this.webSocketInterval = setInterval(() => {
                         this.createWebsocket();
                     }, 10000);

@@ -77,7 +77,10 @@ class LockScreenView extends Component {
         // this.props.getLocation()
         //     .then(this.props.getWeather(this.props.city));
         this.props.getWeather(this.props.city);
-        this.createWebsocket();
+    }
+
+    componentWillUnmount = () => {
+        clearInterval(this.webSocketInterval);
     }
 
     createWebsocket = () => {
@@ -119,6 +122,7 @@ class LockScreenView extends Component {
                 // connection closed
                 console.log(e.code, e.reason);
                 try {
+                    clearInterval(this.webSocketInterval);
                     this.webSocketInterval = setInterval(() => {
                         this.createWebsocket();
                     }, 10000);
